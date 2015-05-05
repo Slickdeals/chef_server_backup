@@ -1,8 +1,9 @@
-name             'chef-server-backup'
-maintainer       'The Authors'
-maintainer_email 'you@example.com'
-license          'all_rights'
-description      'Installs/Configures chef-server-backup'
-long_description 'Installs/Configures chef-server-backup'
+name             'chef_server_backup'
+maintainer       'D3'
+maintainer_email 'hipster@slickdeals.net'
+license          'BSD 3-Clause'
+description      'Sets up automated chef-server backups using knife-backup'
+long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.1.0'
 
+depends 'cron'

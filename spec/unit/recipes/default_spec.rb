@@ -19,5 +19,9 @@ describe 'chef-server-backup::default' do
       chef_run # This should not raise an error
     end
 
+    it 'installs knife-backup' do
+      expect(chef_run).to install_chef_gem('knife-backup')
+    end
+
   end
 end
