@@ -1,0 +1,5 @@
+{
+  "url"       : "https://chef.example.com/",
+  "directory" : "/var/chef/backup/dc01",
+  "key"       : "-----BEGIN RSA PRIVATE KEY-----\nMIIEow..."
+}
