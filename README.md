@@ -38,8 +38,6 @@ Set up or delete a chef_server_backup directory and cron job
 - `weekday` - Weekday column of cron entry (Default: *)
 
 ## Usage
-Include the `recipe[chef_server_backup::default]` in your runlist or wrapper cookbook to install the required software and make the LWRP available.
-
 To use the `recipe[chef_server_backup::build_jobs]` include it in your run list and have a daga bag called `chef_server_backup` with an item like the following recipe;
 
 ```
@@ -60,7 +58,7 @@ or a backup job to be removed:
 }
 ```
 
-It is passable to wrap this cookbook and call default and then manually add an LWRP for each server you need to back up but that would require putting a full read pem key in your wrapper cookbook
+If you would rather use a wrapper cookbook instead of data bags include `chef_server_backup::default` to install knife backup and make the LWRP availible to your cookbook
 
 ## Development
 Rake is set up to run all the tests! Make sure to add chefspec as needed.
