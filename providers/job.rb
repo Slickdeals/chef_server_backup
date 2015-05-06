@@ -6,38 +6,38 @@ use_inline_resources
 
 action :create do
   directory backup_dir do
-    action :create
-    mode   0750
-    user   new_resource.backup_user
-    group  new_resource.backup_group
+    action    :create
+    mode      0750
+    user      new_resource.backup_user
+    group     new_resource.backup_group
     recursive true
   end
 
   template knife_pem do
-    source "pem.erb"
-    owner  new_resource.backup_user
-    group  new_resource.backup_group
-    mode 0640
-    variables({
-      :key => new_resource.key
-    })
-  end
-
-  template knife_rb do
-    source "knife.erb"
+    source 'pem.erb'
     owner  new_resource.backup_user
     group  new_resource.backup_group
     mode   0640
-    variables({
+    variables(
+      :key => new_resource.key
+    )
+  end
+
+  template knife_rb do
+    source 'knife.erb'
+    owner  new_resource.backup_user
+    group  new_resource.backup_group
+    mode   0640
+    variables(
       :chef_user => new_resource.chef_user,
       :key       => knife_pem,
       :server    => new_resource.url
-    })
+    )
   end
 
   cron_d new_resource.name do
     command "knife backup export -D #{ backup_dir } --latest -c #{ knife_rb }"
-    path    "/opt/chef/bin/:$PATH"
+    path    '/opt/chef/bin/:$PATH'
     user    new_resource.backup_user
     minute  new_resource.minute
     hour    new_resource.hour
@@ -62,15 +62,14 @@ action :delete do
   end
 end
 
-
 def backup_dir
   new_resource.send('directory') || ::File.join(Chef::Config['file_backup_path'], new_resource.name)
 end
 
 def knife_rb
-  ::File.join(backup_dir, "/#{ new_resource.name }-knife.rb")
+  ::File.join(backup_dir, 'knife.rb')
 end
 
 def knife_pem
-  ::File.join(backup_dir, "/#{ new_resource.name }-knife.pem")
+  ::File.join(backup_dir, 'knife.pem')
 end

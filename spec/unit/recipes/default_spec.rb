@@ -7,9 +7,7 @@
 require 'spec_helper'
 
 describe 'chef_server_backup::default' do
-
   context 'When all attributes are default, on an unspecified platform' do
-
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
@@ -22,6 +20,5 @@ describe 'chef_server_backup::default' do
     it 'installs knife-backup' do
       expect(chef_run).to install_chef_gem('knife-backup')
     end
-
   end
 end

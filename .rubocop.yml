@@ -1,0 +1,14 @@
+Metrics/LineLength:
+  Max: 120
+
+# variable({
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+# Allows for alignment of parameters
+Style/SingleSpaceBeforeFirstArg:
+  Enabled: false
+
+# Ruby 1.9 hashes ( key: 'value' instead of :key => 'value )
+Style/HashSyntax:
+  Enabled: false

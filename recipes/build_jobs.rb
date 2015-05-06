@@ -13,10 +13,10 @@ servers.each do |server|
   job_name = job['name'] || server.to_s
 
   chef_server_backup_job job_name do
-    %w{url key directory backup_user backup_group
-    chef_user minute hour day month weekday}.each do |attr|
+    %w(url key directory backup_user backup_group
+       chef_user minute hour day month weekday).each do |attr|
       send(attr, job[attr]) if job[attr]
     end
-    action Array(job['action']).map { |a| a.to_sym } if job['action']
+    action Array(job['action']).map(&:to_sym) if job['action']
   end
 end
