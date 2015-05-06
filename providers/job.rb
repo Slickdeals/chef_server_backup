@@ -35,7 +35,7 @@ action :create do
     )
   end
 
-  cron_d new_resource.name do
+  cron_d cron_name do
     command "knife backup export -D #{ backup_dir } --latest -c #{ knife_rb }"
     path    '/opt/chef/bin/:$PATH'
     user    new_resource.backup_user
@@ -48,7 +48,7 @@ action :create do
 end
 
 action :delete do
-  cron_d new_resource.name do
+  cron_d cron_name do
     action :delete
   end
   file knife_rb do
@@ -72,4 +72,8 @@ end
 
 def knife_pem
   ::File.join(backup_dir, 'knife.pem')
+end
+
+def cron_name
+  "#{new_resource.name}-backup"
 end

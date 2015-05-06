@@ -2,11 +2,8 @@ require 'spec_helper'
 
 describe 'chef-server-backup::default' do
 
-  # Serverspec examples can be found at
-  # http://serverspec.org/resource_types.html
-  
-  it 'does something' do
-    skip 'Replace this with meaningful tests'
+  describe command('knife backup') do
+    its(:stdout) { should contain 'BACKUP COMMANDS' }
   end
 
 end

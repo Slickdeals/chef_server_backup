@@ -63,6 +63,7 @@ or a backup job to be removed:
 It is passable to wrap this cookbook and call default and then manually add an LWRP for each server you need to back up but that would require putting a full read pem key in your wrapper cookbook
 
 ## Development
+Rake is set up to run all the tests! Make sure to add chefspec as needed.
 
 ## Licence & Authors
 - Authors:

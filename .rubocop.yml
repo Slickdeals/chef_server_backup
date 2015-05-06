@@ -12,3 +12,7 @@ Style/SingleSpaceBeforeFirstArg:
 # Ruby 1.9 hashes ( key: 'value' instead of :key => 'value )
 Style/HashSyntax:
   Enabled: false
+
+# Using " when you could use '
+Style/StringLiterals:
+  Enabled: false

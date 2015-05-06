@@ -1,30 +1,48 @@
 require 'rspec/core/rake_task'
-desc 'ChefSpec tests'
-RSpec::Core::RakeTask.new(:unit) do |t|
-  t.rspec_opts = [].tap do |a|
-    a.push('--color')
-    a.push('--format documentation')
-  end.join(' ')
-end
-
 require 'foodcritic'
-desc 'Run food critic with job failure on'
-FoodCritic::Rake::LintTask.new do |t|
-  t.options = {:fail_tags => ['correctness']}
-end
-
 require 'rubocop/rake_task'
-desc 'Run RuboCop on the code significant directory'
-RuboCop::RakeTask.new(:rubocop) do |task|
-  task.patterns = ['recipes/*.rb', 'libraries/*.rb',
-                   'providers/*.rb', 'resources/*.rb', 'spec/**/*.rb']
-  # only show the files with failures
-  #task.formatters = ['files']
-  # don't abort rake on failure
-  task.fail_on_error = true
+require 'kitchen/rake_tasks'
+
+task :default => ['test:quick']
+
+namespace :test do
+
+  RSpec::Core::RakeTask.new(:unit) do |t|
+    t.rspec_opts = %w(
+    --color
+    --format documentation
+    ).join(' ')
+  end
+
+  FoodCritic::Rake::LintTask.new do |t|
+    t.options = {:fail_tags => %w(correctness services libraries deprecated) }
+  end
+
+  RuboCop::RakeTask.new(:rubocop) do |task|
+    task.patterns = ['recipes/*.rb', 'libraries/*.rb',
+                     'providers/*.rb', 'resources/*.rb', 'spec/**/*.rb']
+    task.formatters = ['progress']
+    task.fail_on_error = true
+  end
+
+  Kitchen::RakeTasks.new
+
+
+  desc 'Run just the quick tests'
+  task :quick do
+    Rake::Task['test:rubocop'].invoke
+    Rake::Task['test:foodcritic'].invoke
+    Rake::Task['test:unit'].invoke
+  end
+
+  desc "Run *all* the tests. Tea time."
+  task :complete do
+    Rake::Task['test:quick'].invoke
+    Rake::Task['test:kitchen:all'].invoke
+  end
+
+  desc "Run CI tests"
+  task :ci do
+    Rake::Task['test:complete'].invoke
+  end
 end
-
-desc "Run All tests"
-task :test => [:unit, :foodcritic, :rubocop]
-
-task :default => [:test]

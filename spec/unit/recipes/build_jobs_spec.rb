@@ -41,7 +41,7 @@ describe 'chef_server_backup::build_jobs' do
     end
 
     it 'creates the cron job' do
-      expect(chef_run).to create_cron_d('dc01')
+      expect(chef_run).to create_cron_d('dc01-backup')
     end
   end
 
@@ -80,7 +80,7 @@ describe 'chef_server_backup::build_jobs' do
     end
 
     it 'deletes the cron job' do
-      expect(chef_run).to delete_cron_d('dc01')
+      expect(chef_run).to delete_cron_d('dc01-backup')
     end
   end
 end
