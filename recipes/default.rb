@@ -7,6 +7,6 @@
 
 chef_gem 'knife-backup' do # ~FC009
   action [:install]
-  compile_time false
+  compile_time false if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time) # For Chef 11
   version node['chef_server_backup']['knife-backup']['version']
 end
