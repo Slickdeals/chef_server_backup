@@ -40,6 +40,10 @@ describe 'chef_server_backup::build_jobs' do
       expect(chef_run).to create_template('/foo/bar/dc01/knife.rb')
     end
 
+    it 'creates the backup.sh' do
+      expect(chef_run).to create_template('/foo/bar/dc01/backup.sh')
+    end
+
     it 'creates the cron job' do
       expect(chef_run).to create_cron_d('dc01-backup')
     end
@@ -81,6 +85,10 @@ describe 'chef_server_backup::build_jobs' do
 
     it 'deletes the knife.rb' do
       expect(chef_run).to delete_file(::File.join(dest_dir, 'knife.rb'))
+    end
+
+    it 'deletes the backup.sh' do
+      expect(chef_run).to delete_file(::File.join(dest_dir, 'backup.sh'))
     end
 
     it 'deletes the cron job' do

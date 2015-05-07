@@ -35,9 +35,19 @@ action :create do
     )
   end
 
+  template backup_sh do
+    source 'backup.sh.erb'
+    owner  new_resource.backup_user
+    group  new_resource.backup_group
+    mode   0750
+    variables(
+      :directory => todays_dir,
+      :knife_rb  => knife_rb
+    )
+  end
+
   cron_d cron_name do
-    command cron_command
-    path    '/opt/chef/bin/:$PATH'
+    command backup_sh
     user    new_resource.backup_user
     minute  new_resource.minute
     hour    new_resource.hour
@@ -70,6 +80,9 @@ action :delete do
   file knife_pem do
     action :delete
   end
+  file backup_sh do
+    action :delete
+  end
   directory backup_dir do
     action :delete
   end
@@ -91,12 +104,12 @@ def knife_pem
   ::File.join(backup_dir, 'knife.pem')
 end
 
-def cron_name
-  "#{new_resource.name}-backup"
+def backup_sh
+  ::File.join(backup_dir, 'backup.sh')
 end
 
-def cron_command
-  "knife backup export -D #{ todays_dir } --latest -c #{ knife_rb }; tar --remove-files -czf #{ todays_dir }.tgz #{ todays_dir } "
+def cron_name
+  "#{new_resource.name}-backup"
 end
 
 def cron_clean_name

@@ -1,0 +1,5 @@
+#!/bin/sh
+PATH=/opt/chef/bin:$PATH
+
+knife backup export -D <%= @directory %> --latest -c <%= @knife_rb %>
+tar --remove-files --auto-compress -C <%= Pathname(@directory).parent %> -cf <%= @directory %>.tgz <%= Pathname(@directory).basename %>
