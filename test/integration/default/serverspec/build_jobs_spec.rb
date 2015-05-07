@@ -24,7 +24,7 @@ describe 'chef_server_backup::build_jobs' do
 
   describe file('/etc/cron.d/dc01-backup-clean') do
     its(:content) { should contain('find /var/chef/backup/dc01/') }
-    its(:content) { should contain('-type f -name "\*\.zip"') }
+    its(:content) { should contain('-type f -name "\*\.tgz"') }
     its(:content) { should contain('-mtime \+31') }
     its(:content) { should contain('-delete') }
   end

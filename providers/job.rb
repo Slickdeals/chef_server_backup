@@ -117,5 +117,5 @@ def cron_clean_name
 end
 
 def cron_clean_command
-  "find #{ backup_dir } -type f -name \"*.zip\" -mtime +#{ new_resource.retention } -delete"
+  "find #{ backup_dir } -type f -name \"*.tgz\" -mtime +#{ new_resource.retention } -delete"
 end
