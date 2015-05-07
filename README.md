@@ -23,7 +23,7 @@ Set up or delete a chef_server_backup directory and cron job
 #### Parameters
 ##### Required:
 * `name` - Short name of the job, must match `[\w\d_-]+`
-* `url` - full url to your chef instance (including orginization if needed)
+* `url` - full url to your chef instance (including organization if needed)
 * `key` - the private key of the backup user on the chef server (this user should have full read permissions to all objects)
 
 ##### Optional:
@@ -39,7 +39,7 @@ Set up or delete a chef_server_backup directory and cron job
 - `weekday` - Weekday column of cron entry (Default: *)
 
 ## Usage
-To use the `recipe[chef_server_backup::build_jobs]` include it in your run list and have a daga bag called `chef_server_backup` with an item like the following recipe;
+To use the `recipe[chef_server_backup::build_jobs]` include it in your run list and have a data bag called `chef_server_backup` with an item like the following recipe;
 
 ```
 ### you can leave out the name and the name of the data bag item will be used
@@ -59,12 +59,12 @@ or a backup job to be removed:
 }
 ```
 
-If you would rather use a wrapper cookbook instead of data bags include `chef_server_backup::default` to install knife backup and make the LWRP availible to your cookbook
+If you would rather use a wrapper cookbook instead of data bags include `chef_server_backup::default` to install knife backup and make the LWRP available to your cookbook
 
 ## Development
-Rake is set up to run all the tests! Make sure to add chefspec as needed.
+Rake is set up to run all the tests! Make sure to add chefspec and serverspec as needed.
 
-## Licence & Authors
+## License & Authors
 - Authors:
  - David Aronsohn <hipster@slickdeals.net>
 
