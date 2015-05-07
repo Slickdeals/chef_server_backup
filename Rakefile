@@ -6,27 +6,25 @@ require 'kitchen/rake_tasks'
 task :default => ['test:quick']
 
 namespace :test do
-
   RSpec::Core::RakeTask.new(:unit) do |t|
     t.rspec_opts = %w(
-    --color
-    --format documentation
+      --color
+      --format progress
     ).join(' ')
   end
 
   FoodCritic::Rake::LintTask.new do |t|
-    t.options = {:fail_tags => %w(correctness services libraries deprecated) }
+    t.options = { :fail_tags => %w(correctness services libraries deprecated) }
   end
 
   RuboCop::RakeTask.new(:rubocop) do |task|
-    task.patterns = ['recipes/*.rb', 'libraries/*.rb',
-                     'providers/*.rb', 'resources/*.rb', 'spec/**/*.rb']
+    task.patterns = %w( recipes/*.rb libraries/*.rb providers/*.rb resources/*.rb
+                        spec/**/*.rb test/**/*.rb )
     task.formatters = ['progress']
-    task.fail_on_error = true
+    task.fail_on_error = false
   end
 
   Kitchen::RakeTasks.new
-
 
   desc 'Run just the quick tests'
   task :quick do

@@ -36,8 +36,18 @@ action :create do
   end
 
   cron_d cron_name do
-    command "knife backup export -D #{ backup_dir } --latest -c #{ knife_rb }"
+    command cron_command
     path    '/opt/chef/bin/:$PATH'
+    user    new_resource.backup_user
+    minute  new_resource.minute
+    hour    new_resource.hour
+    day     new_resource.day
+    month   new_resource.month
+    weekday new_resource.weekday
+  end
+
+  cron_d cron_clean_name do
+    command cron_clean_command
     user    new_resource.backup_user
     minute  new_resource.minute
     hour    new_resource.hour
@@ -49,6 +59,9 @@ end
 
 action :delete do
   cron_d cron_name do
+    action :delete
+  end
+  cron_d cron_clean_name do
     action :delete
   end
   file knife_rb do
@@ -66,6 +79,10 @@ def backup_dir
   new_resource.send('directory') || ::File.join(Chef::Config['file_backup_path'], new_resource.name)
 end
 
+def todays_dir
+  ::File.join(backup_dir, '$(date +%F)')
+end
+
 def knife_rb
   ::File.join(backup_dir, 'knife.rb')
 end
@@ -76,4 +93,16 @@ end
 
 def cron_name
   "#{new_resource.name}-backup"
+end
+
+def cron_command
+  "knife backup export -D #{ todays_dir } --latest -c #{ knife_rb }; tar --remove-files -czf #{ todays_dir }.tgz #{ todays_dir } "
+end
+
+def cron_clean_name
+  "#{ cron_name }-clean"
+end
+
+def cron_clean_command
+  "find #{ backup_dir } -type f -name \"*.zip\" -mtime +#{ new_resource.retention } -delete"
 end

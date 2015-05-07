@@ -12,13 +12,11 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[chef_server_backup::default]
       - recipe[chef_server_backup::build_jobs]
     attributes:
   - name: chef11
     driver:
       require_chef_omnibus: 11.18.12
     run_list:
-      - recipe[chef_server_backup::default]
       - recipe[chef_server_backup::build_jobs]
     attributes:

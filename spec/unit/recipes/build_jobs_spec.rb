@@ -43,6 +43,10 @@ describe 'chef_server_backup::build_jobs' do
     it 'creates the cron job' do
       expect(chef_run).to create_cron_d('dc01-backup')
     end
+
+    it 'creates the file cleaner cron job' do
+      expect(chef_run).to create_cron_d('dc01-backup-clean')
+    end
   end
 
   context 'When all attributes are default, and sparsely populated delete data bag' do
@@ -81,6 +85,10 @@ describe 'chef_server_backup::build_jobs' do
 
     it 'deletes the cron job' do
       expect(chef_run).to delete_cron_d('dc01-backup')
+    end
+
+    it 'deletes the file cleaner cron job' do
+      expect(chef_run).to delete_cron_d('dc01-backup-clean')
     end
   end
 end

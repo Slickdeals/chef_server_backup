@@ -31,6 +31,7 @@ Set up or delete a chef_server_backup directory and cron job
 - `backup_user` - System user to back up as (Default: root)
 - `backup_group` - System group to add to backup directory and files (Default: root)
 - `chef_user` - Chef user to set as node_name (Default: backup)
+- `retention` - Number of days back to keep, files older than this will be purged daily (Default: 31)
 - `minute` - Minute column of cron entry (Default: 0)
 - `hour` - Hour column of cron entry (Default: 0)
 - `day` - Day column of cron entry (Default: *)
