@@ -80,7 +80,7 @@ def backup_dir
 end
 
 def todays_dir
-  ::File.join(backup_dir, '$(date +%F)')
+  ::File.join(backup_dir, '$(date "+%F")')
 end
 
 def knife_rb
