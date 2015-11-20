@@ -56,6 +56,10 @@ action :create do
     weekday new_resource.weekday
   end
 
+  cron_d old_cron_name do
+    action :delete
+  end
+
   cron_d cron_clean_name do
     command cron_clean_command
     user    new_resource.backup_user
@@ -64,6 +68,10 @@ action :create do
     day     new_resource.day
     month   new_resource.month
     weekday new_resource.weekday
+  end
+
+  cron_d old_cron_clean_name do
+    action :delete
   end
 end
 
@@ -109,10 +117,18 @@ def backup_sh
 end
 
 def cron_name
+  "chef-#{new_resource.name}-backup"
+end
+
+def old_cron_name
   "#{new_resource.name}-backup"
 end
 
 def cron_clean_name
+  "chef-#{ cron_name }-clean"
+end
+
+def old_cron_clean_name
   "#{ cron_name }-clean"
 end
 
