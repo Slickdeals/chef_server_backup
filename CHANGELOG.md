@@ -2,6 +2,10 @@ chef_server_backup Cookbook CHANGELOG
 =====================================
 This file is used to list changes made in each version of the chef_server_backup cookbook.
 
+v2.0.2 ( 2015-11-19 )
+---------------------
+- Move to knife-backup 0.0.11 for chef 12.3 server support
+
 v2.0.1 ( 2015-11-19 )
 ---------------------
 - Fix expected file name of chef server SSL certificates
