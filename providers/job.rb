@@ -1,3 +1,5 @@
+require 'uri'
+
 def whyrun_supported?
   true
 end
@@ -33,6 +35,12 @@ action :create do
       :key       => knife_pem,
       :server    => new_resource.url
     )
+  end
+
+  execute "/opt/chef/bin/knife ssl fetch -c #{knife_rb}" do
+    action  :run
+    creates ssl_certificate
+    not_if  { ::File.exist?(ssl_certificate) }
   end
 
   template backup_sh do
@@ -85,6 +93,12 @@ action :delete do
   file knife_rb do
     action :delete
   end
+  file ssl_certificate do
+    action :delete
+  end
+  directory cert_dir do
+    action :delete
+  end
   file knife_pem do
     action :delete
   end
@@ -100,12 +114,24 @@ def backup_dir
   new_resource.send('directory') || ::File.join(Chef::Config['file_backup_path'], new_resource.name)
 end
 
+def server_hostname
+  URI.parse(new_resource.url).host
+end
+
 def todays_dir
   ::File.join(backup_dir, '$(date "+%F")')
 end
 
 def knife_rb
   ::File.join(backup_dir, 'knife.rb')
+end
+
+def cert_dir
+  ::File.join(backup_dir, 'trusted_certs')
+end
+
+def ssl_certificate
+  ::File.join(cert_dir, "#{server_hostname}.crt")
 end
 
 def knife_pem
@@ -125,13 +151,13 @@ def old_cron_name
 end
 
 def cron_clean_name
-  "chef-#{ cron_name }-clean"
+  "#{cron_name}-clean"
 end
 
 def old_cron_clean_name
-  "#{ cron_name }-clean"
+  "#{old_cron_name}-clean"
 end
 
 def cron_clean_command
-  "find #{ backup_dir } -type f -name \"*.tgz\" -mtime +#{ new_resource.retention } -delete"
+  "find #{backup_dir} -type f -name \"*.tgz\" -mtime +#{new_resource.retention} -delete"
 end

@@ -61,6 +61,10 @@ or a backup job to be removed:
 
 If you would rather use a wrapper cookbook instead of data bags include `chef_server_backup::default` to install knife backup and make the LWRP available to your cookbook
 
+## Important security note
+If the server certificate is not present the resource will use knife ssl fetch to pull it from the server.
+You should always verify this is the correct and valid server for each instance. If it is invalid backups cannot work.
+
 ## Development
 Rake is set up to run all the tests! Make sure to add chefspec and serverspec as needed.
 
