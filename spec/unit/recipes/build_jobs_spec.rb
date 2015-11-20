@@ -93,7 +93,7 @@ describe 'chef_server_backup::build_jobs' do
     end
 
     it 'deletes the ssl cert' do
-      expect(chef_run).to delete_file(::File.join(dest_dir, 'trusted_certs', 'chef.example.com.crt'))
+      expect(chef_run).to delete_file(::File.join(dest_dir, 'trusted_certs', 'chef_example_com.crt'))
     end
 
     it 'deletes the trusted_certs dir' do

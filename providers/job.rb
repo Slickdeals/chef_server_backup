@@ -118,6 +118,11 @@ def server_hostname
   URI.parse(new_resource.url).host
 end
 
+# SSL Certs use underscores instead of periods
+def sanitized_hostname
+  server_hostname.tr('.', '_')
+end
+
 def todays_dir
   ::File.join(backup_dir, '$(date "+%F")')
 end
@@ -131,7 +136,7 @@ def cert_dir
 end
 
 def ssl_certificate
-  ::File.join(cert_dir, "#{server_hostname}.crt")
+  ::File.join(cert_dir, "#{sanitized_hostname}.crt")
 end
 
 def knife_pem
